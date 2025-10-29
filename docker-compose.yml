@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./boletimAlunoBackend
+      dockerfile: Dockerfile
+    image: boletim-backend:latest
+    container_name: boletim-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+
+  frontend:
+    build:
+      context: ./boletimFrontend
+      dockerfile: Dockerfile
+    image: boletim-frontend:latest
+    container_name: boletim-frontend
+    depends_on:
+      - backend
+    ports:
+      - "4200:80"
