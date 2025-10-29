@@ -1,0 +1,102 @@
+<mat-toolbar class="boletim-toolbar">
+  <div class="toolbar-inner">
+    <mat-form-field appearance="outline" class="select-field">
+      <mat-label>Turma</mat-label>
+      <mat-select [value]="turmaId" (selectionChange)="onTurmaChange($event.value)">
+        <mat-option *ngFor="let t of turmas" [value]="t.id">{{ t.nome }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="select-field">
+      <mat-label>Disciplina</mat-label>
+      <mat-select
+        [value]="disciplinaId"
+        (selectionChange)="onDisciplinaChange($event.value)"
+        [disabled]="!turmaId || disciplinas.length === 0">
+        <mat-option *ngFor="let d of disciplinas" [value]="d.id">{{ d.nome }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+   
+    <div class="toolbar-note" *ngIf="!turmaId || !disciplinaId">Selecione Turma e Disciplina</div>
+  </div>
+</mat-toolbar>
+
+<!-- conteudo principal -->
+<div class="content-wrapper" *ngIf="!loading; else loadingTpl">
+  <mat-card class="table-card">
+    <div class="table-header">
+      <h3>Boletim</h3>
+        <small class="subtitle" *ngIf="turmaId && disciplinaId">
+        Turma: <strong>{{ selectedTurmaNome }}</strong>
+        &nbsp;•&nbsp;
+        Disciplina: <strong>{{ selectedDisciplinaNome }}</strong>
+        </small>
+    </div>
+
+    <form [formGroup]="form">
+      <div class="table-scroll">
+        <table mat-table [dataSource]="rows.controls" class="mat-elevation-z2" formArrayName="rows">
+
+          <!-- Coluna Aluno -->
+          <ng-container matColumnDef="alunoNome">
+            <th mat-header-cell *matHeaderCellDef class="col-aluno">Aluno</th>
+            <td mat-cell *matCellDef="let row; let i = index" [formGroupName]="i" class="col-aluno">
+              {{ row.get('alunoNome')?.value }}
+            </td>
+          </ng-container>
+
+          <!-- Colunas Avaliacoes -->
+          <ng-container *ngFor="let av of avaliacoes" [matColumnDef]="'av-' + av.id">
+            <th mat-header-cell *matHeaderCellDef class="col-av">{{ av.nome }}
+              <span class="peso">(Peso: {{ av.peso }})</span>
+            </th>
+            <td mat-cell *matCellDef="let row; let i = index" [formGroupName]="i" class="col-av">
+              <div [formGroupName]="'notas'">
+                <mat-form-field appearance="fill" class="nota-field">
+                  <input matInput type="number"
+                         formControlName="{{'av-' + av.id}}"
+                         min="0" max="10" step="0.1" />
+                  <mat-error *ngIf="
+                    (rows.at(i).get('notas')!.get('av-' + av.id)!.hasError('min')) ||
+                    (rows.at(i).get('notas')!.get('av-' + av.id)!.hasError('max'))
+                  ">
+                    0–10
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Coluna Media -->
+          <ng-container matColumnDef="media">
+            <th mat-header-cell *matHeaderCellDef class="col-media">Média</th>
+            <td mat-cell *matCellDef="let row; let i = index" [formGroupName]="i" class="col-media">
+              <span class="media-badge">{{ formatMedia(row.get('media')?.value) }}</span>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns;" [formGroupName]="i"></tr>
+        </table>
+      </div>
+
+      <div class="actions">
+        <button mat-flat-button class="btn-save" (click)="onSave()" [disabled]="isAnyInvalid() || saveInProgress">
+          <mat-icon>save</mat-icon>
+          <span>{{ saveInProgress ? 'Salvando...' : 'Salvar lançamentos' }}</span>
+        </button>
+
+        <button mat-stroked-button class="btn-cancel" (click)="loadBoletim()" [disabled]="saveInProgress">
+          Recarregar
+        </button>
+      </div>
+    </form>
+  </mat-card>
+</div>
+
+<ng-template #loadingTpl>
+  <div class="loading-wrapper">
+    <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
+    <div>Carregando dados...</div>
+  </div>
+</ng-template>

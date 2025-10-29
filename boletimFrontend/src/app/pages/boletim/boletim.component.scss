@@ -1,0 +1,163 @@
+:host {
+  --yellow: #ffd54f;
+  --gray-100: #f5f6f8;
+  --gray-200: #eceff1;
+  --gray-300: #d6d6d9;
+  --text: #263238;
+  display: block;
+  padding: 24px;
+  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: #fafafa;
+}
+
+/* toolbar */
+.boletim-toolbar {
+  background: #ffffff;
+  border-bottom: 4px solid var(--yellow);
+  padding: 12px 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  color: var(--text);
+  border-radius: 8px;
+}
+
+.toolbar-inner {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+}
+
+.select-field {
+  min-width: 200px;
+  width: 260px;
+}
+
+.select-field .mat-form-field-flex {
+  background: #fff;
+  border-radius: 6px;
+  padding: 0 6px;
+  height: 44px;
+  align-items: center;
+}
+
+.select-field .mat-form-field-outline {
+  color: var(--gray-300);
+}
+
+.select-field:focus-within .mat-form-field-outline,
+.select-field.mat-focused .mat-form-field-outline {
+  color: var(--yellow) !important;
+  stroke: var(--yellow) !important;
+  box-shadow: 0 4px 10px rgba(255, 213, 79, 0.12);
+}
+
+.select-field .mat-select-value-text {
+  color: var(--text);
+}
+
+.toolbar-note {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.table-card {
+  margin-top: 18px;
+  padding: 18px;
+  background: #ffffff;
+  border-radius: 10px;
+  border: 1px solid var(--gray-100);
+}
+
+.table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.table-header h3 {
+  margin: 0;
+  font-weight: 600;
+  color: var(--text);
+  font-size: 1.25rem;
+}
+
+.subtitle {
+  color: #666;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.table-scroll {
+  overflow: auto;
+  max-width: 100%;
+  margin-bottom: 12px;
+}
+
+.col-aluno { width: 260px; }
+.col-av { width: 120px; text-align: center; }
+.col-media { width: 90px; text-align: center; }
+
+.nota-field {
+  width: 90px;
+}
+.mat-form-field-appearance-fill .mat-form-field-flex {
+  padding: 0 8px;
+  height: 38px;
+}
+
+.media-badge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 16px;
+  background: var(--gray-100);
+  color: var(--text);
+  font-weight: 600;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.btn-save {
+  background: var(--yellow);
+  color: #1f1f1f;
+  height: 40px;
+  min-width: 150px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  text-transform: none;
+}
+
+.btn-save mat-icon { font-size: 18px; }
+
+.btn-save[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-cancel {
+  height: 40px;
+  border-radius: 8px;
+  color: #444;
+  border-color: var(--gray-300);
+  text-transform: none;
+}
+
+.loading-wrapper {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  color: #666;
+}
